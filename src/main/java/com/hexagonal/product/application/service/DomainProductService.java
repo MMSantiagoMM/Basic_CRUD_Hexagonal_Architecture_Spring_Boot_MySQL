@@ -1,0 +1,40 @@
+package com.hexagonal.product.application.service;
+
+import com.hexagonal.product.domain.model.Product;
+import com.hexagonal.product.infrastructure.adapter.ProductRepositoryMySQL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DomainProductService implements ProductService{
+
+
+    private final ProductRepositoryMySQL productRepositoryMySQL;
+
+    public DomainProductService(ProductRepositoryMySQL productRepositoryMySQL) {
+        this.productRepositoryMySQL = productRepositoryMySQL;
+    }
+
+
+    @Override
+    public List<Product> getProducts() {
+        return productRepositoryMySQL.getProducts();
+    }
+
+    @Override
+    public Product getProductById(Integer id) {
+        return productRepositoryMySQL.getProduct(id).get();
+    }
+
+    @Override
+    public Product saveProduct(Product product) {
+        return productRepositoryMySQL.saveProduct(product);
+    }
+
+    @Override
+    public Boolean deleteProduct(Integer id) {
+        return productRepositoryMySQL.deleteProductById(id);
+    }
+}
