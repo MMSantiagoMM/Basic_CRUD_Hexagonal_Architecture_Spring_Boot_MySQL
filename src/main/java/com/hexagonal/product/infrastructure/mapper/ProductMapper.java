@@ -13,6 +13,7 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
 
+
     Product toProduct(ProductEntity productEntity);
 
 

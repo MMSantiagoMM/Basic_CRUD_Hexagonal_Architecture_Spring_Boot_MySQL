@@ -30,11 +30,7 @@ public class ProductRepositoryMySQL implements ProductRepository {
     public Optional<Product> getProduct(Integer id) {
         ProductEntity product = productCrudRepositoryMySQL.findById(id)
                 .orElseThrow(()-> new ProductNotFoundException(id));
-        Product product2 = new Product();
-        product2.setName(product.getName());
-        product2.setDescription(product.getDescription());
-        product2.setPrice(product.getPrice());
-        return Optional.of(product2);
+        return Optional.of(productMapper.toProduct(product));
     }
 
     @Override
