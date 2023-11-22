@@ -15,9 +15,9 @@ public interface ProductMapper {
 
     Product toProduct(ProductEntity productEntity);
 
-    @Mapping(target = "id", ignore = true)
+
     ProductEntity toEntity(Product product);
 
-    @Mapping(target = "id", ignore = true)
+
     Iterable<Product> toProducts(Iterable<ProductEntity> productEntityIterable);
 }
