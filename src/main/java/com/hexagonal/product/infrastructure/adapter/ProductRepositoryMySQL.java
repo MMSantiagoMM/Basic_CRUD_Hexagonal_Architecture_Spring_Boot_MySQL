@@ -4,10 +4,8 @@ import com.hexagonal.product.domain.model.Product;
 import com.hexagonal.product.domain.port.ProductRepository;
 import com.hexagonal.product.infrastructure.entity.ProductEntity;
 import com.hexagonal.product.infrastructure.exceptions.ProductNotFoundException;
+import com.hexagonal.product.infrastructure.mapper.ProductMapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -15,17 +13,17 @@ import java.util.Optional;
 public class ProductRepositoryMySQL implements ProductRepository {
 
     private final ProductCrudRepositoryMySQL productCrudRepositoryMySQL;
+    private final ProductMapper productMapper;
 
-    public ProductRepositoryMySQL(ProductCrudRepositoryMySQL productCrudRepositoryMySQL) {
+    public ProductRepositoryMySQL(ProductCrudRepositoryMySQL productCrudRepositoryMySQL, ProductMapper productMapper) {
         this.productCrudRepositoryMySQL = productCrudRepositoryMySQL;
+        this.productMapper = productMapper;
     }
 
 
     @Override
-    public List<Product> getProducts() {
-        List<Product> products = Collections.singletonList((Product)
-                productCrudRepositoryMySQL.findAll());
-        return products;
+    public Iterable<Product> getProducts() {
+        return productMapper.toProducts(productCrudRepositoryMySQL.findAll());
     }
 
     @Override
@@ -41,12 +39,9 @@ public class ProductRepositoryMySQL implements ProductRepository {
 
     @Override
     public Product saveProduct(Product product) {
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setName(product.getName());
-        productEntity.setDescription(product.getDescription());
-        productEntity.setPrice(product.getPrice());
-        productCrudRepositoryMySQL.save(productEntity);
+        productCrudRepositoryMySQL.save(ProductMapper.INSTANCE.toEntity(product));
         return product;
+
     }
 
     @Override

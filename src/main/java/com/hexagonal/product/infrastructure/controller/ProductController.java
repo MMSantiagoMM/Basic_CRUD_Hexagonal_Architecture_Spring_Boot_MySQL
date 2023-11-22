@@ -1,6 +1,7 @@
-package com.hexagonal.product.infrastructure.rest.controller;
+package com.hexagonal.product.infrastructure.controller;
 
 
+import com.hexagonal.product.application.dto.ProductDTO;
 import com.hexagonal.product.application.service.DomainProductService;
 import com.hexagonal.product.domain.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -23,12 +25,12 @@ public class ProductController {
 
 
     @PostMapping
-    ResponseEntity<Product> create (@RequestBody Product product){
-        return new ResponseEntity<>(service.saveProduct(product), HttpStatus.CREATED);
+    ResponseEntity<Product> create (@RequestBody ProductDTO newProduct){
+        return new ResponseEntity<>(service.saveProduct(newProduct), HttpStatus.CREATED);
     }
 
     @GetMapping
-    ResponseEntity<List<Product>> getAll(){
+    ResponseEntity<Iterable<Product>> getAll(){
         return new ResponseEntity<>(service.getProducts(),HttpStatus.OK);
     }
 

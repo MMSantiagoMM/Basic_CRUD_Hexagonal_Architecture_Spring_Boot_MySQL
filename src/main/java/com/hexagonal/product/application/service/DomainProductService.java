@@ -1,6 +1,9 @@
 package com.hexagonal.product.application.service;
 
+import com.hexagonal.product.application.dto.ProductDTO;
+import com.hexagonal.product.application.mapper.ProductMapperDTO;
 import com.hexagonal.product.domain.model.Product;
+import com.hexagonal.product.domain.port.ProductRepository;
 import com.hexagonal.product.infrastructure.adapter.ProductRepositoryMySQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class DomainProductService implements ProductService{
 
 
     @Override
-    public List<Product> getProducts() {
+    public Iterable<Product> getProducts() {
         return productRepositoryMySQL.getProducts();
     }
 
@@ -29,8 +32,10 @@ public class DomainProductService implements ProductService{
     }
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepositoryMySQL.saveProduct(product);
+    public Product saveProduct(ProductDTO product) {
+        return productRepositoryMySQL.saveProduct(
+                ProductMapperDTO.INSTANCE.productDtoToProduct(product)
+        );
     }
 
     @Override
